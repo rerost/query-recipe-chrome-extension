@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package rerost.query_recipe_api;
+
+option go_package = "github.com/rerost/query-recipe-api/api;api_pb";
+
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "type/snippet.proto";
+
+service SnippetService {
+  rpc ListSnippets (ListSnippetsRequest) returns (ListSnippetsResponse) {
+    option (google.api.http) = {
+      get: "/snippets"
+    };
+  }
+  rpc GetSnippet (GetSnippetRequest) returns (rerost.query_recipe_api.type.Snippet) {
+    option (google.api.http) = {
+      get: "/snippets/{snippet_id}"
+    };
+  }
+  rpc CreateSnippet (CreateSnippetRequest) returns (rerost.query_recipe_api.type.Snippet) {
+    option (google.api.http) = {
+      post: "/snippets"
+      body: "snippet"
+    };
+  }
+  rpc UpdateSnippet (UpdateSnippetRequest) returns (rerost.query_recipe_api.type.Snippet) {
+    option (google.api.http) = {
+      patch: "/snippets/{snippet.id}"
+      body: "snippet"
+    };
+  }
+  rpc DeleteSnippet (DeleteSnippetRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/snippets/{snippet_id}"
+    };
+  }
+}
+
+message ListSnippetsRequest {
+}
+
+message ListSnippetsResponse {
+  repeated rerost.query_recipe_api.type.Snippet snippets = 1;
+}
+
+message GetSnippetRequest {
+  string snippet_id = 1;
+}
+
+message CreateSnippetRequest {
+  rerost.query_recipe_api.type.Snippet snippet = 1;
+}
+
+message UpdateSnippetRequest {
+  rerost.query_recipe_api.type.Snippet snippet = 1;
+}
+
+message DeleteSnippetRequest {
+  string snippet_id = 1;
+}
