@@ -37,8 +37,8 @@ export default class SnippetDescription extends React.Component<Props> {
       <div>
         <title>{selected.id}</title>
         <div dangerouslySetInnerHTML={{__html: html}} />
-        <button onClick={this.copyToClipboard.bind(this)}>Copy To Clipboard</button>
         <textarea ref={(e) => this.sqlElement = e} defaultValue={selected.sql === null ? "" : selected.sql} />
+        <button onClick={this.copyToClipboard.bind(this)}>Copy To Clipboard</button>
       </div>
     )
   }
