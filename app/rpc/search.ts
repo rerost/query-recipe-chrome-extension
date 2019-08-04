@@ -14,7 +14,6 @@ export default class SearchRPC {
       body: JSON.stringify(request.toJSON()),
     })
     let result = await res.json()
-    console.log(result)
     return pb.SearchResult.fromObject(result)
   }
 }

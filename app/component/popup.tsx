@@ -33,7 +33,6 @@ export default class Popup extends React.Component<Props, State> {
     request.keyword = keyword
     let client = new SearchRPC("http://localhost:3001")
     client.search(request).then((result: pb.SearchResult) => {
-      console.log(result)
       this.setState({
         snippets: result.hits,
       })
