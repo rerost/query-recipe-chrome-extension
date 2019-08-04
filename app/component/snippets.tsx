@@ -13,15 +13,19 @@ interface Props {
 export default class Snippets extends React.Component<Props> {
   render() {
     return (
-      this.props.data.map((s, index) => {
-        if (s === null) {
-          return
+      <div style={{paddingRight: "10px"}}>
+        {
+          this.props.data.map((s, index) => {
+            if (s === null) {
+              return
+            }
+            if (s.id === null) {
+              return // Not reachable(Api return id)
+            }
+            return <Snippet key={s.id} data={s} onClick={() => this.props.setDescription(index)}/>
+          })
         }
-        if (s.id === null) {
-          return // Not reachable(Api return id)
-        }
-        return <Snippet key={s.id} data={s} onClick={() => this.props.setDescription(index)}/>
-      })
+      </div>
     )
   }
 }

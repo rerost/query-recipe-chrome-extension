@@ -13,22 +13,32 @@ interface Props {
 interface State {
   snippets: Array<pb.type.ISnippet>
   selected: null | number // TODO(@rerost) Only integer
+  keyword: string
 }
 
 export default class Popup extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { snippets: [], selected: null }
+    this.state = { snippets: [], selected: null, keyword: ""}
   }
 
-  changeText(e: any) {
+  onEnter(e: any) {
     if (e.keyCode !== 13) {
       return
     }
 
     e.preventDefault();
 
-    let keyword = e.target.value
+    this.search()
+  }
+
+  search() {
+    this.setState({
+      snippets: [],
+    })
+
+    let keyword = this.state.keyword
+    console.log(keyword)
     let request = new pb.SearchRequest
     request.keyword = keyword
     let client = new SearchRPC("http://localhost:3001")
@@ -37,6 +47,14 @@ export default class Popup extends React.Component<Props, State> {
         snippets: result.hits,
       })
     })
+  }
+
+  onChangeText(e:any) {
+    console.log(e.target)
+    this.setState({
+      keyword: e.target.value,
+    })
+    return true
   }
 
   setDescription(index: number) {
@@ -50,12 +68,17 @@ export default class Popup extends React.Component<Props, State> {
     return (
       <div>
         <h3>QueryRecipe</h3>
-        <input onKeyDown={this.changeText.bind(this)} />
-        <Snippets setDescription={this.setDescription.bind(this)} data={snippets} />
-        {selected != null ?
-          <SnippetDescription selected={snippets[selected]} /> :
-          null
-        }
+        <div style={{display: 'flex'}}>
+          <input onKeyUp={(e) => {this.onChangeText(e) && this.onEnter(e)}} />
+          <button onClick={this.search.bind(this)}>Search</button>
+        </div>
+        <div style={{display: 'flex'}}>
+          <Snippets setDescription={this.setDescription.bind(this)} data={snippets} />
+          {selected != null ?
+            <SnippetDescription selected={snippets[selected]} /> :
+            null
+          }
+        </div>
       </div>
     )
   }
