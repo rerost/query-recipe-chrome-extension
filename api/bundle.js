@@ -694,6 +694,7 @@ $root.rerost = (function() {
                  * @interface ISnippet
                  * @property {string|null} [id] Snippet id
                  * @property {string|null} [sql] Snippet sql
+                 * @property {string|null} [document] Snippet document
                  */
 
                 /**
@@ -728,6 +729,14 @@ $root.rerost = (function() {
                 Snippet.prototype.sql = "";
 
                 /**
+                 * Snippet document.
+                 * @member {string} document
+                 * @memberof rerost.query_recipe_api.type.Snippet
+                 * @instance
+                 */
+                Snippet.prototype.document = "";
+
+                /**
                  * Creates a new Snippet instance using the specified properties.
                  * @function create
                  * @memberof rerost.query_recipe_api.type.Snippet
@@ -755,6 +764,8 @@ $root.rerost = (function() {
                         writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
                     if (message.sql != null && message.hasOwnProperty("sql"))
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.sql);
+                    if (message.document != null && message.hasOwnProperty("document"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.document);
                     return writer;
                 };
 
@@ -794,6 +805,9 @@ $root.rerost = (function() {
                             break;
                         case 2:
                             message.sql = reader.string();
+                            break;
+                        case 3:
+                            message.document = reader.string();
                             break;
                         default:
                             reader.skipType(tag & 7);
@@ -836,6 +850,9 @@ $root.rerost = (function() {
                     if (message.sql != null && message.hasOwnProperty("sql"))
                         if (!$util.isString(message.sql))
                             return "sql: string expected";
+                    if (message.document != null && message.hasOwnProperty("document"))
+                        if (!$util.isString(message.document))
+                            return "document: string expected";
                     return null;
                 };
 
@@ -855,6 +872,8 @@ $root.rerost = (function() {
                         message.id = String(object.id);
                     if (object.sql != null)
                         message.sql = String(object.sql);
+                    if (object.document != null)
+                        message.document = String(object.document);
                     return message;
                 };
 
@@ -874,11 +893,14 @@ $root.rerost = (function() {
                     if (options.defaults) {
                         object.id = "";
                         object.sql = "";
+                        object.document = "";
                     }
                     if (message.id != null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     if (message.sql != null && message.hasOwnProperty("sql"))
                         object.sql = message.sql;
+                    if (message.document != null && message.hasOwnProperty("document"))
+                        object.document = message.document;
                     return object;
                 };
 

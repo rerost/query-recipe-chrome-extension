@@ -331,6 +331,9 @@ export namespace rerost {
 
                 /** Snippet sql */
                 sql?: (string|null);
+
+                /** Snippet document */
+                document?: (string|null);
             }
 
             /** Represents a Snippet. */
@@ -347,6 +350,9 @@ export namespace rerost {
 
                 /** Snippet sql. */
                 public sql: string;
+
+                /** Snippet document. */
+                public document: string;
 
                 /**
                  * Creates a new Snippet instance using the specified properties.
