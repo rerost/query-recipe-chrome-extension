@@ -13,7 +13,8 @@ export default class SearchRPC {
       method: "POST",
       body: JSON.stringify(request.toJSON()),
     })
-    let result = res.json()
+    let result = await res.json()
+    console.log(result)
     return pb.SearchResult.fromObject(result)
   }
 }

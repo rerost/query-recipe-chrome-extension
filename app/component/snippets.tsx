@@ -6,21 +6,21 @@ import pb = bundle.rerost.query_recipe_api
 import Snippet from "./Snippet"
 
 interface Props {
-  data: null | Array<pb.type.ISnippet>
+  data: Array<pb.type.ISnippet>
+  setDescription: (index:number) => void
 }
 
 export default class Snippets extends React.Component<Props> {
   render() {
-    if (this.props.data == null) {
-      return null
-    }
-
     return (
-      this.props.data.map((s) => {
-        if (s == null) {
+      this.props.data.map((s, index) => {
+        if (s === null) {
           return
         }
-        return <Snippet data={s}/>
+        if (s.id === null) {
+          return // Not reachable(Api return id)
+        }
+        return <Snippet key={s.id} data={s} onClick={() => this.props.setDescription(index)}/>
       })
     )
   }

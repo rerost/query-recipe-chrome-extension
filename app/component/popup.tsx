@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { EventEmitter } from 'events'
 
 import * as bundle from "../../api/bundle"
 import pb = bundle.rerost.query_recipe_api
@@ -7,8 +6,6 @@ import pb = bundle.rerost.query_recipe_api
 import Snippets from "./Snippets"
 import SnippetDescription from "./snippet_description"
 import SearchRPC from "../rpc/search"
-
-export const event = new EventEmitter
 
 interface Props {
 }
@@ -24,40 +21,29 @@ export default class Popup extends React.Component<Props, State> {
     this.state = { snippets: [], selected: null }
   }
 
-  componentDidMount() {
-    event.on("input", (keyword:string) => {
-      let request = new pb.SearchRequest
-      request.keyword = keyword
-      let client = new SearchRPC("http://localhost:3001")
-      client.search(request).then((result:pb.SearchResult) => {
-        this.setState({
-          snippets: result.hits,
-        })
-      })
-    })
-    event.on("select", (index:number) => {
-      this.setState({
-        selected: index,
-      })
-    })
-  }
-
-  changeText(e:any) {
+  changeText(e: any) {
     if (e.keyCode !== 13) {
       return
     }
 
-      e.preventDefault();
+    e.preventDefault();
 
     let keyword = e.target.value
-      let request = new pb.SearchRequest
-      request.keyword = keyword
-      let client = new SearchRPC("http://localhost:3001")
-      client.search(request).then((result:pb.SearchResult) => {
-        this.setState({
-          snippets: result.hits,
-        })
+    let request = new pb.SearchRequest
+    request.keyword = keyword
+    let client = new SearchRPC("http://localhost:3001")
+    client.search(request).then((result: pb.SearchResult) => {
+      console.log(result)
+      this.setState({
+        snippets: result.hits,
       })
+    })
+  }
+
+  setDescription(index: number) {
+    this.setState({
+      selected: index,
+    })
   }
 
   render() {
@@ -66,10 +52,10 @@ export default class Popup extends React.Component<Props, State> {
       <div>
         <h3>QueryRecipe</h3>
         <input onKeyDown={this.changeText.bind(this)} />
-        <Snippets data={snippets}/>
-        { selected != null ? 
-          <SnippetDescription selected={snippets[selected]} /> : 
-          null 
+        <Snippets setDescription={this.setDescription.bind(this)} data={snippets} />
+        {selected != null ?
+          <SnippetDescription selected={snippets[selected]} /> :
+          null
         }
       </div>
     )

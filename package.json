@@ -62,9 +62,11 @@
   },
   "dependencies": {
     "@types/react-dom": "^16.8.5",
+    "@types/showdown": "^1.9.3",
     "awesome-typescript-loader": "^5.2.1",
     "protobufjs": "^6.8.8",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "showdown": "^1.9.0"
   }
 }
