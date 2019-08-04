@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package rerost.query_recipe_api.type;
+
+option go_package = "github.com/rerost/query-recipe-api/api/type;type_pb";
+
+message Snippet {
+  string id = 1;
+  string sql = 2;
+  // GFM
+  string document = 3;
+}

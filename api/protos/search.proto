@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package rerost.query_recipe_api;
+
+option go_package = "github.com/rerost/query-recipe-api/api;api_pb";
+
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "type/snippet.proto";
+
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResult) {
+    option (google.api.http) = {
+      post: "/search",
+      body: "*"
+    };
+  }
+}
+
+message Search {
+  string search_id = 1;
+}
+
+message SearchRequest {
+  string keyword = 1;
+}
+
+message SearchResult {
+  repeated rerost.query_recipe_api.type.Snippet hits = 1;
+}
