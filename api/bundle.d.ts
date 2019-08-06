@@ -143,6 +143,9 @@ export namespace rerost {
         /** Properties of a SearchRequest. */
         interface ISearchRequest {
 
+            /** SearchRequest metadata */
+            metadata?: (rerost.query_recipe_api.type.IGithubMetadata|null);
+
             /** SearchRequest keyword */
             keyword?: (string|null);
         }
@@ -155,6 +158,9 @@ export namespace rerost {
              * @param [properties] Properties to set
              */
             constructor(properties?: rerost.query_recipe_api.ISearchRequest);
+
+            /** SearchRequest metadata. */
+            public metadata?: (rerost.query_recipe_api.type.IGithubMetadata|null);
 
             /** SearchRequest keyword. */
             public keyword: string;
@@ -420,6 +426,108 @@ export namespace rerost {
 
                 /**
                  * Converts this Snippet to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+            }
+
+            /** Properties of a GithubMetadata. */
+            interface IGithubMetadata {
+
+                /** GithubMetadata access_token */
+                access_token?: (string|null);
+
+                /** GithubMetadata owner */
+                owner?: (string|null);
+
+                /** GithubMetadata repository */
+                repository?: (string|null);
+            }
+
+            /** Represents a GithubMetadata. */
+            class GithubMetadata implements IGithubMetadata {
+
+                /**
+                 * Constructs a new GithubMetadata.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: rerost.query_recipe_api.type.IGithubMetadata);
+
+                /** GithubMetadata access_token. */
+                public access_token: string;
+
+                /** GithubMetadata owner. */
+                public owner: string;
+
+                /** GithubMetadata repository. */
+                public repository: string;
+
+                /**
+                 * Creates a new GithubMetadata instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns GithubMetadata instance
+                 */
+                public static create(properties?: rerost.query_recipe_api.type.IGithubMetadata): rerost.query_recipe_api.type.GithubMetadata;
+
+                /**
+                 * Encodes the specified GithubMetadata message. Does not implicitly {@link rerost.query_recipe_api.type.GithubMetadata.verify|verify} messages.
+                 * @param message GithubMetadata message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: rerost.query_recipe_api.type.IGithubMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified GithubMetadata message, length delimited. Does not implicitly {@link rerost.query_recipe_api.type.GithubMetadata.verify|verify} messages.
+                 * @param message GithubMetadata message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: rerost.query_recipe_api.type.IGithubMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a GithubMetadata message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns GithubMetadata
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): rerost.query_recipe_api.type.GithubMetadata;
+
+                /**
+                 * Decodes a GithubMetadata message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns GithubMetadata
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): rerost.query_recipe_api.type.GithubMetadata;
+
+                /**
+                 * Verifies a GithubMetadata message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a GithubMetadata message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns GithubMetadata
+                 */
+                public static fromObject(object: { [k: string]: any }): rerost.query_recipe_api.type.GithubMetadata;
+
+                /**
+                 * Creates a plain object from a GithubMetadata message. Also converts values to other types if specified.
+                 * @param message GithubMetadata
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: rerost.query_recipe_api.type.GithubMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this GithubMetadata to JSON.
                  * @returns JSON object
                  */
                 public toJSON(): { [k: string]: any };

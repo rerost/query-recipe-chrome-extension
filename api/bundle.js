@@ -288,6 +288,7 @@ $root.rerost = (function() {
              * Properties of a SearchRequest.
              * @memberof rerost.query_recipe_api
              * @interface ISearchRequest
+             * @property {rerost.query_recipe_api.type.IGithubMetadata|null} [metadata] SearchRequest metadata
              * @property {string|null} [keyword] SearchRequest keyword
              */
 
@@ -305,6 +306,14 @@ $root.rerost = (function() {
                         if (properties[keys[i]] != null)
                             this[keys[i]] = properties[keys[i]];
             }
+
+            /**
+             * SearchRequest metadata.
+             * @member {rerost.query_recipe_api.type.IGithubMetadata|null|undefined} metadata
+             * @memberof rerost.query_recipe_api.SearchRequest
+             * @instance
+             */
+            SearchRequest.prototype.metadata = null;
 
             /**
              * SearchRequest keyword.
@@ -338,8 +347,10 @@ $root.rerost = (function() {
             SearchRequest.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.metadata != null && message.hasOwnProperty("metadata"))
+                    $root.rerost.query_recipe_api.type.GithubMetadata.encode(message.metadata, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 if (message.keyword != null && message.hasOwnProperty("keyword"))
-                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.keyword);
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.keyword);
                 return writer;
             };
 
@@ -375,6 +386,9 @@ $root.rerost = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
+                        message.metadata = $root.rerost.query_recipe_api.type.GithubMetadata.decode(reader, reader.uint32());
+                        break;
+                    case 2:
                         message.keyword = reader.string();
                         break;
                     default:
@@ -412,6 +426,11 @@ $root.rerost = (function() {
             SearchRequest.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
+                if (message.metadata != null && message.hasOwnProperty("metadata")) {
+                    var error = $root.rerost.query_recipe_api.type.GithubMetadata.verify(message.metadata);
+                    if (error)
+                        return "metadata." + error;
+                }
                 if (message.keyword != null && message.hasOwnProperty("keyword"))
                     if (!$util.isString(message.keyword))
                         return "keyword: string expected";
@@ -430,6 +449,11 @@ $root.rerost = (function() {
                 if (object instanceof $root.rerost.query_recipe_api.SearchRequest)
                     return object;
                 var message = new $root.rerost.query_recipe_api.SearchRequest();
+                if (object.metadata != null) {
+                    if (typeof object.metadata !== "object")
+                        throw TypeError(".rerost.query_recipe_api.SearchRequest.metadata: object expected");
+                    message.metadata = $root.rerost.query_recipe_api.type.GithubMetadata.fromObject(object.metadata);
+                }
                 if (object.keyword != null)
                     message.keyword = String(object.keyword);
                 return message;
@@ -448,8 +472,12 @@ $root.rerost = (function() {
                 if (!options)
                     options = {};
                 var object = {};
-                if (options.defaults)
+                if (options.defaults) {
+                    object.metadata = null;
                     object.keyword = "";
+                }
+                if (message.metadata != null && message.hasOwnProperty("metadata"))
+                    object.metadata = $root.rerost.query_recipe_api.type.GithubMetadata.toObject(message.metadata, options);
                 if (message.keyword != null && message.hasOwnProperty("keyword"))
                     object.keyword = message.keyword;
                 return object;
@@ -916,6 +944,238 @@ $root.rerost = (function() {
                 };
 
                 return Snippet;
+            })();
+
+            type.GithubMetadata = (function() {
+
+                /**
+                 * Properties of a GithubMetadata.
+                 * @memberof rerost.query_recipe_api.type
+                 * @interface IGithubMetadata
+                 * @property {string|null} [access_token] GithubMetadata access_token
+                 * @property {string|null} [owner] GithubMetadata owner
+                 * @property {string|null} [repository] GithubMetadata repository
+                 */
+
+                /**
+                 * Constructs a new GithubMetadata.
+                 * @memberof rerost.query_recipe_api.type
+                 * @classdesc Represents a GithubMetadata.
+                 * @implements IGithubMetadata
+                 * @constructor
+                 * @param {rerost.query_recipe_api.type.IGithubMetadata=} [properties] Properties to set
+                 */
+                function GithubMetadata(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * GithubMetadata access_token.
+                 * @member {string} access_token
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @instance
+                 */
+                GithubMetadata.prototype.access_token = "";
+
+                /**
+                 * GithubMetadata owner.
+                 * @member {string} owner
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @instance
+                 */
+                GithubMetadata.prototype.owner = "";
+
+                /**
+                 * GithubMetadata repository.
+                 * @member {string} repository
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @instance
+                 */
+                GithubMetadata.prototype.repository = "";
+
+                /**
+                 * Creates a new GithubMetadata instance using the specified properties.
+                 * @function create
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {rerost.query_recipe_api.type.IGithubMetadata=} [properties] Properties to set
+                 * @returns {rerost.query_recipe_api.type.GithubMetadata} GithubMetadata instance
+                 */
+                GithubMetadata.create = function create(properties) {
+                    return new GithubMetadata(properties);
+                };
+
+                /**
+                 * Encodes the specified GithubMetadata message. Does not implicitly {@link rerost.query_recipe_api.type.GithubMetadata.verify|verify} messages.
+                 * @function encode
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {rerost.query_recipe_api.type.IGithubMetadata} message GithubMetadata message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                GithubMetadata.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.access_token != null && message.hasOwnProperty("access_token"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.access_token);
+                    if (message.owner != null && message.hasOwnProperty("owner"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.owner);
+                    if (message.repository != null && message.hasOwnProperty("repository"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.repository);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified GithubMetadata message, length delimited. Does not implicitly {@link rerost.query_recipe_api.type.GithubMetadata.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {rerost.query_recipe_api.type.IGithubMetadata} message GithubMetadata message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                GithubMetadata.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a GithubMetadata message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {rerost.query_recipe_api.type.GithubMetadata} GithubMetadata
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                GithubMetadata.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.rerost.query_recipe_api.type.GithubMetadata();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.access_token = reader.string();
+                            break;
+                        case 2:
+                            message.owner = reader.string();
+                            break;
+                        case 3:
+                            message.repository = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a GithubMetadata message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {rerost.query_recipe_api.type.GithubMetadata} GithubMetadata
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                GithubMetadata.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a GithubMetadata message.
+                 * @function verify
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                GithubMetadata.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.access_token != null && message.hasOwnProperty("access_token"))
+                        if (!$util.isString(message.access_token))
+                            return "access_token: string expected";
+                    if (message.owner != null && message.hasOwnProperty("owner"))
+                        if (!$util.isString(message.owner))
+                            return "owner: string expected";
+                    if (message.repository != null && message.hasOwnProperty("repository"))
+                        if (!$util.isString(message.repository))
+                            return "repository: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a GithubMetadata message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {rerost.query_recipe_api.type.GithubMetadata} GithubMetadata
+                 */
+                GithubMetadata.fromObject = function fromObject(object) {
+                    if (object instanceof $root.rerost.query_recipe_api.type.GithubMetadata)
+                        return object;
+                    var message = new $root.rerost.query_recipe_api.type.GithubMetadata();
+                    if (object.access_token != null)
+                        message.access_token = String(object.access_token);
+                    if (object.owner != null)
+                        message.owner = String(object.owner);
+                    if (object.repository != null)
+                        message.repository = String(object.repository);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a GithubMetadata message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @static
+                 * @param {rerost.query_recipe_api.type.GithubMetadata} message GithubMetadata
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                GithubMetadata.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.access_token = "";
+                        object.owner = "";
+                        object.repository = "";
+                    }
+                    if (message.access_token != null && message.hasOwnProperty("access_token"))
+                        object.access_token = message.access_token;
+                    if (message.owner != null && message.hasOwnProperty("owner"))
+                        object.owner = message.owner;
+                    if (message.repository != null && message.hasOwnProperty("repository"))
+                        object.repository = message.repository;
+                    return object;
+                };
+
+                /**
+                 * Converts this GithubMetadata to JSON.
+                 * @function toJSON
+                 * @memberof rerost.query_recipe_api.type.GithubMetadata
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                GithubMetadata.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return GithubMetadata;
             })();
 
             return type;

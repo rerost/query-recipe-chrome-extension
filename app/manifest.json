@@ -2,7 +2,7 @@
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "manifest_version": 2,
   "default_locale": "en",
   "icons": {
@@ -11,11 +11,11 @@
   },
   "background": {
     "scripts": [
-      "scripts/popup.jsx"
+      "scripts/popup.js"
     ]
   },
   "web_accessible_resources": [
-    "scripts/popup.jsx"
+    "scripts/popup.js"
   ],
   "browser_action": {
     "default_icon": {
@@ -24,5 +24,8 @@
     },
     "default_title": "__MSG_browserActionTitle__",
     "default_popup": "pages/popup.html"
-  }
+  },
+  "permissions": [
+    "storage"
+  ]
 }

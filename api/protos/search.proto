@@ -8,6 +8,7 @@ option go_package = "github.com/rerost/query-recipe-api/api;api_pb";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "type/snippet.proto";
+import "type/metadata.proto";
 
 service SearchService {
   rpc Search (SearchRequest) returns (SearchResult) {
@@ -23,7 +24,8 @@ message Search {
 }
 
 message SearchRequest {
-  string keyword = 1;
+  rerost.query_recipe_api.type.GithubMetadata metadata = 1;
+  string keyword = 2;
 }
 
 message SearchResult {
