@@ -7,8 +7,6 @@ import Snippets from "./snippets"
 import Config from "./config"
 import SnippetDescription from "./snippet_description"
 import SearchRPC from "../rpc/search"
-import { string } from 'prop-types';
-import { format } from 'url';
 
 interface Props {
 }
@@ -24,9 +22,11 @@ interface State {
   keyword: string
   mode: Mode
   githubMetadata: null | pb.type.GithubMetadata
+  hostURL: string
 }
 
 const GithubMetaDataKey = "GithubMetaDataKey"
+const HostURLKey = "HostURLKey"
 
 export default class Popup extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -37,6 +37,7 @@ export default class Popup extends React.Component<Props, State> {
       selected: null,
       keyword: "",
       githubMetadata: null,
+      hostURL: "",
     }
   }
 
@@ -59,6 +60,22 @@ export default class Popup extends React.Component<Props, State> {
         githubMetadata: m,
       })
     })
+
+    chrome.storage.local.get(HostURLKey, (result) => {
+      this.setState({
+        hostURL: result[HostURLKey],
+      })
+    })
+    chrome.storage.onChanged.addListener((changes: any) => {
+      const storageChange = changes[HostURLKey]
+      if (!storageChange || (storageChange.oldValue === storageChange.newValue)) {
+        return
+      }
+
+      this.setState({
+        hostURL: storageChange.newValue,
+      })
+    })
   }
 
   onEnter(e: any) {
@@ -78,15 +95,11 @@ export default class Popup extends React.Component<Props, State> {
 
     let keyword = this.state.keyword
     let request = new pb.SearchRequest
-    let metadata = new pb.type.GithubMetadata
-
-    metadata.access_token = ""
-    metadata.owner = "rerost"
-    metadata.repository = "test-query-recipe"
   
     request.keyword = keyword
+    request.metadata = this.state.githubMetadata
 
-    let client = new SearchRPC("http://localhost:3001")
+    let client = new SearchRPC(this.state.hostURL)
     client.search(request).then((result: pb.SearchResult) => {
       this.setState({
         snippets: result.hits,
@@ -135,20 +148,22 @@ export default class Popup extends React.Component<Props, State> {
     )
   }
 
-  onSubmitConfig(githubAccessToken:string, owner:string, repository:string) {
+  onSubmitConfig(hostURL:string, githubAccessToken:string, owner:string, repository:string) {
     let m = new pb.type.GithubMetadata
     m.access_token = githubAccessToken
     m.owner = owner
     m.repository = repository
 
     chrome.storage.local.set({GithubMetaDataKey: JSON.stringify(m.toJSON())})
+    chrome.storage.local.set({HostURLKey: hostURL})
   }
 
   renderConfig() {
-    const { githubMetadata } = this.state
+    const { githubMetadata, hostURL } = this.state
     return (
       <Config 
         onSubmit={this.onSubmitConfig.bind(this)}
+        hostURL={hostURL}
         githubAccessToken={githubMetadata === null ? "" : githubMetadata.access_token}
         owner={githubMetadata === null ? "" : githubMetadata.owner}
         repository={githubMetadata === null ? "" : githubMetadata.repository}
