@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package rerost.query_recipe_api.type;
+
+option go_package = "github.com/rerost/query-recipe-api/api/type;type_pb";
+
+message GithubMetadata {
+  string access_token = 1;
+  string owner = 2;
+  string repository = 3;
+}
