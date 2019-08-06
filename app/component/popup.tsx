@@ -7,6 +7,8 @@ import Snippets from "./snippets"
 import Config from "./config"
 import SnippetDescription from "./snippet_description"
 import SearchRPC from "../rpc/search"
+import { string } from 'prop-types';
+import { format } from 'url';
 
 interface Props {
 }
@@ -21,12 +23,43 @@ interface State {
   selected: null | number // TODO(@rerost) Only integer
   keyword: string
   mode: Mode
+  githubMetadata: null | pb.type.GithubMetadata
 }
+
+const GithubMetaDataKey = "GithubMetaDataKey"
 
 export default class Popup extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { mode: Mode.Search, snippets: [], selected: null, keyword: ""}
+    this.state = {
+      mode: Mode.Search,
+      snippets: [],
+      selected: null,
+      keyword: "",
+      githubMetadata: null,
+    }
+  }
+
+  componentDidMount() {
+    chrome.storage.local.get(GithubMetaDataKey, (result) => {
+      const m = pb.type.GithubMetadata.fromObject(JSON.parse(result[GithubMetaDataKey]))
+      console.log(m)
+
+      this.setState({
+        githubMetadata: m,
+      })
+    })
+    chrome.storage.onChanged.addListener((changes: any) => {
+      const storageChange = changes[GithubMetaDataKey]
+      if (!storageChange || (storageChange.oldValue === storageChange.newValue)) {
+        return
+      }
+
+      const m = pb.type.GithubMetadata.fromObject(JSON.parse(storageChange.newValue))
+      this.setState({
+        githubMetadata: m,
+      })
+    })
   }
 
   onEnter(e: any) {
@@ -63,7 +96,6 @@ export default class Popup extends React.Component<Props, State> {
   }
 
   onChangeText(e:any) {
-    console.log(e.target)
     this.setState({
       keyword: e.target.value,
     })
@@ -104,13 +136,23 @@ export default class Popup extends React.Component<Props, State> {
     )
   }
 
+  onSubmitConfig(githubAccessToken:string, owner:string, repository:string) {
+    let m = new pb.type.GithubMetadata
+    m.access_token = githubAccessToken
+    m.owner = owner
+    m.repository = repository
+
+    chrome.storage.local.set({GithubMetaDataKey: JSON.stringify(m.toJSON())})
+  }
+
   renderConfig() {
+    const { githubMetadata } = this.state
     return (
       <Config 
-        onSubmit={(a,b,c) => {console.log("OK")} }
-        githubAccessToken=""
-        owner=""
-        repository=""
+        onSubmit={this.onSubmitConfig.bind(this)}
+        githubAccessToken={githubMetadata === null ? "" : githubMetadata.access_token}
+        owner={githubMetadata === null ? "" : githubMetadata.owner}
+        repository={githubMetadata === null ? "" : githubMetadata.repository}
       />
     )
   }
