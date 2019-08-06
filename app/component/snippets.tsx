@@ -3,7 +3,7 @@ import * as React from 'react'
 import * as bundle from "../../api/bundle"
 import pb = bundle.rerost.query_recipe_api
 
-import Snippet from "./Snippet"
+import Snippet from "./snippet"
 
 interface Props {
   data: Array<pb.type.ISnippet>
