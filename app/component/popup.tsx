@@ -43,7 +43,6 @@ export default class Popup extends React.Component<Props, State> {
   componentDidMount() {
     chrome.storage.local.get(GithubMetaDataKey, (result) => {
       const m = pb.type.GithubMetadata.fromObject(JSON.parse(result[GithubMetaDataKey]))
-      console.log(m)
 
       this.setState({
         githubMetadata: m,
